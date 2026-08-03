@@ -1,0 +1,13 @@
+ONE THING QUIZ UPGRADE
+
+1. In Supabase, open SQL Editor.
+2. Open SUPABASE-QUIZ-UPGRADE.sql from this folder.
+3. Copy all of it, paste it into Supabase, and click Run.
+4. In your CURRENT GitHub repository, click Add file > Upload files.
+5. Upload everything from this folder.
+6. Let GitHub replace the old files.
+7. Click Commit changes.
+8. Wait about 1 minute and refresh your app.
+9. Log in. The quiz should open automatically.
+
+This does not require a new repository.
