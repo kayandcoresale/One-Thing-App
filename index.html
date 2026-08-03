@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#15131a" />
+  <meta name="description" content="One Thing keeps reminding you until you complete the action that moves your goal forward." />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="icons/icon-192.svg" />
+  <link rel="stylesheet" href="styles.css" />
+  <title>One Thing</title>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">YOUR DAILY COMMITMENT</p>
+        <h1 id="appTitle">One Thing</h1>
+      </div>
+      <button class="icon-button" id="settingsButton" aria-label="Open settings">⚙</button>
+    </header>
+
+    <main>
+      <section class="hero-card">
+        <div class="hero-topline">
+          <span id="todayLabel">TODAY</span>
+          <span class="status-pill" id="todayStatus">Waiting</span>
+        </div>
+        <h2 id="commitmentDisplay">Go live on Whatnot</h2>
+        <p class="show-time" id="showTimeDisplay">7:00 PM</p>
+
+        <div class="countdown" id="countdownDisplay">Set your schedule to begin.</div>
+
+        <div class="primary-actions">
+          <button class="button button-primary" id="liveButton">I’m Live</button>
+          <button class="button button-secondary" id="completeButton">Completed</button>
+        </div>
+        <button class="text-button" id="skipButton">I’m skipping today</button>
+      </section>
+
+      <section class="stats-grid">
+        <article class="stat-card">
+          <span>Current streak</span>
+          <strong id="streakValue">0 days</strong>
+        </article>
+        <article class="stat-card">
+          <span>Profit logged</span>
+          <strong id="profitValue">$0</strong>
+        </article>
+        <article class="stat-card">
+          <span>Debt remaining</span>
+          <strong id="debtRemainingValue">$200,000</strong>
+        </article>
+        <article class="stat-card">
+          <span>Shows completed</span>
+          <strong id="showsValue">0</strong>
+        </article>
+      </section>
+
+      <section class="panel">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">AFTER YOUR SHOW</p>
+            <h3>Log today’s result</h3>
+          </div>
+        </div>
+        <form id="resultForm" class="result-form">
+          <label>
+            Gross sales
+            <div class="money-input"><span>$</span><input id="grossInput" type="number" min="0" step="0.01" placeholder="0.00" /></div>
+          </label>
+          <label>
+            Profit
+            <div class="money-input"><span>$</span><input id="profitInput" type="number" min="0" step="0.01" placeholder="0.00" /></div>
+          </label>
+          <label>
+            Items sold
+            <input id="itemsInput" type="number" min="0" step="1" placeholder="0" />
+          </label>
+          <label>
+            Minutes live
+            <input id="minutesInput" type="number" min="0" step="1" placeholder="0" />
+          </label>
+          <label class="full-width">
+            Notes
+            <textarea id="notesInput" rows="3" placeholder="What worked? What should Future You remember?"></textarea>
+          </label>
+          <button class="button button-primary full-width" type="submit">Save Result</button>
+        </form>
+      </section>
+
+      <section class="panel">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">RECENT HISTORY</p>
+            <h3>Your receipts</h3>
+          </div>
+          <button class="text-button" id="clearHistoryButton">Clear</button>
+        </div>
+        <div id="historyList" class="history-list">
+          <p class="empty-state">No entries yet. Today can be the first green square.</p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="settingsDialog">
+    <form method="dialog" class="settings-form" id="settingsForm">
+      <div class="dialog-heading">
+        <div>
+          <p class="eyebrow">SET IT ONCE</p>
+          <h2>Your one thing</h2>
+        </div>
+        <button class="icon-button" value="cancel" aria-label="Close settings">✕</button>
+      </div>
+
+      <label>
+        App name
+        <input id="appNameInput" type="text" maxlength="30" value="One Thing" />
+      </label>
+
+      <label>
+        Daily commitment
+        <input id="commitmentInput" type="text" maxlength="80" value="Go live on Whatnot" required />
+      </label>
+
+      <label>
+        Show time
+        <input id="showTimeInput" type="time" value="19:00" required />
+      </label>
+
+      <label>
+        Reminder mode
+        <select id="reminderModeInput">
+          <option value="gentle">Gentle</option>
+          <option value="normal">Normal</option>
+          <option value="relentless" selected>Relentless</option>
+        </select>
+      </label>
+
+      <label>
+        Accountability voice
+        <select id="voiceInput">
+          <option value="encouraging">Encouraging</option>
+          <option value="direct" selected>Direct</option>
+          <option value="accountant">Accountant</option>
+          <option value="funny">Funny</option>
+        </select>
+      </label>
+
+      <label>
+        Total debt goal
+        <div class="money-input"><span>$</span><input id="debtGoalInput" type="number" min="0" step="0.01" value="200000" /></div>
+      </label>
+
+      <label>
+        Amount already paid
+        <div class="money-input"><span>$</span><input id="debtPaidInput" type="number" min="0" step="0.01" value="0" /></div>
+      </label>
+
+      <div class="notification-box">
+        <strong>Notifications</strong>
+        <p id="notificationStatus">Permission has not been requested.</p>
+        <button class="button button-secondary" type="button" id="enableNotificationsButton">Enable notifications</button>
+        <button class="text-button" type="button" id="testNotificationButton">Send test notification</button>
+      </div>
+
+      <button class="button button-primary" value="default" type="submit">Save Settings</button>
+    </form>
+  </dialog>
+
+  <dialog id="skipDialog">
+    <form method="dialog" class="settings-form" id="skipForm">
+      <div class="dialog-heading">
+        <div>
+          <p class="eyebrow">HONEST DATA</p>
+          <h2>Why are you skipping?</h2>
+        </div>
+        <button class="icon-button" value="cancel" aria-label="Close">✕</button>
+      </div>
+      <label><input type="radio" name="skipReason" value="Planned day off" required /> Planned day off</label>
+      <label><input type="radio" name="skipReason" value="Sick" /> Sick</label>
+      <label><input type="radio" name="skipReason" value="Family emergency" /> Family emergency</label>
+      <label><input type="radio" name="skipReason" value="I chose not to do it" /> I chose not to do it</label>
+      <button class="button button-primary" type="submit">Record Skip</button>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>
