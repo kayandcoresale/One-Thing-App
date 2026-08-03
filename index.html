@@ -11,13 +11,34 @@
   <title>One Thing</title>
 </head>
 <body>
+
+<section id="authScreen" class="auth-screen">
+  <div class="auth-card">
+    <p class="eyebrow">ONE GOAL. ONE REPEATED ACTION.</p>
+    <h1>One Thing</h1>
+    <p class="auth-copy">Create an account so your commitment, schedule, progress, and history follow you.</p>
+    <div class="auth-tabs">
+      <button id="loginTab" class="auth-tab active" type="button">Log in</button>
+      <button id="signupTab" class="auth-tab" type="button">Create account</button>
+    </div>
+    <form id="authForm" class="auth-form">
+      <label id="nameLabel" class="hidden">Your name<input id="nameInput" type="text" maxlength="50"></label>
+      <label>Email<input id="emailInput" type="email" required></label>
+      <label>Password<input id="passwordInput" type="password" minlength="6" required></label>
+      <button id="authButton" class="button button-primary" type="submit">Log in</button>
+    </form>
+    <button id="forgotButton" class="text-button" type="button">Forgot password?</button>
+    <p id="authMessage" class="auth-message"></p>
+  </div>
+</section>
+
   <div class="app-shell">
     <header class="topbar">
       <div>
         <p class="eyebrow">YOUR DAILY COMMITMENT</p>
         <h1 id="appTitle">One Thing</h1>
       </div>
-      <button class="icon-button" id="settingsButton" aria-label="Open settings">⚙</button>
+      <div class="header-actions"><span id="userChip" class="user-chip"></span><button class="icon-button" id="settingsButton" aria-label="Open settings">⚙</button></div>
     </header>
 
     <main>
@@ -129,6 +150,19 @@
         <input id="showTimeInput" type="time" value="19:00" required />
       </label>
 
+
+      <fieldset>
+        <legend>Active days</legend>
+        <div class="weekday-grid" id="settingsDays">
+          <label><input type="checkbox" value="0">Sun</label>
+          <label><input type="checkbox" value="1">Mon</label>
+          <label><input type="checkbox" value="2">Tue</label>
+          <label><input type="checkbox" value="3">Wed</label>
+          <label><input type="checkbox" value="4">Thu</label>
+          <label><input type="checkbox" value="5">Fri</label>
+          <label><input type="checkbox" value="6">Sat</label>
+        </div>
+      </fieldset>
       <label>
         Reminder mode
         <select id="reminderModeInput">
@@ -165,7 +199,7 @@
         <button class="text-button" type="button" id="testNotificationButton">Send test notification</button>
       </div>
 
-      <button class="button button-primary" value="default" type="submit">Save Settings</button>
+      <button class="button button-primary" value="default" type="submit">Save Settings</button><button class="button button-secondary" id="logoutButton" type="button">Log out</button>
     </form>
   </dialog>
 
@@ -186,7 +220,36 @@
     </form>
   </dialog>
 
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <script src="app.js"></script>
+  
+<dialog id="onboardingDialog">
+  <form id="onboardingForm" class="settings-form">
+    <div class="dialog-heading"><div><p class="eyebrow">MAKE IT YOURS</p><h2>Choose your one thing</h2></div></div>
+    <label>What is your repeated action?<input id="onboardCommitment" type="text" placeholder="Go live on Whatnot" required></label>
+    <label>What time?<input id="onboardTime" type="time" value="19:00" required></label>
+    <fieldset><legend>Which days?</legend><div class="weekday-grid" id="onboardDays">
+      <label><input type="checkbox" value="0" checked>Sun</label><label><input type="checkbox" value="1" checked>Mon</label>
+      <label><input type="checkbox" value="2" checked>Tue</label><label><input type="checkbox" value="3" checked>Wed</label>
+      <label><input type="checkbox" value="4" checked>Thu</label><label><input type="checkbox" value="5" checked>Fri</label>
+      <label><input type="checkbox" value="6" checked>Sat</label>
+    </div></fieldset>
+    <label>Reminder intensity<select id="onboardMode"><option value="gentle">Gentle</option><option value="normal">Normal</option><option value="relentless" selected>Relentless</option></select></label>
+    <label>Accountability voice<select id="onboardVoice"><option value="encouraging">Encouraging</option><option value="direct" selected>Direct</option><option value="accountant">Financial</option><option value="funny">Funny</option></select></label>
+    <label>Optional money goal<div class="money-input"><span>$</span><input id="onboardGoal" type="number" min="0" step="0.01" placeholder="200000"></div></label>
+    <button class="button button-primary" type="submit">Create My Dashboard</button>
+  </form>
+</dialog>
+<dialog id="migrationDialog">
+  <div class="settings-form">
+    <div class="dialog-heading"><div><p class="eyebrow">FOUND YOUR OLD DATA</p><h2>Bring it with you?</h2></div></div>
+    <p class="dialog-copy">Import the settings and history already saved in this browser?</p>
+    <button id="importButton" class="button button-primary" type="button">Yes, import it</button>
+    <button id="skipImportButton" class="button button-secondary" type="button">No, start fresh</button>
+  </div>
+</dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script src="app.js"></script>
 </body>
 </html>

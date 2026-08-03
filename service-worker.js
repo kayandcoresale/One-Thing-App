@@ -1,9 +1,10 @@
-const CACHE = "one-thing-v1";
+const CACHE = "one-thing-v2-supabase";
 const ASSETS = [
   "./",
   "./index.html",
   "./styles.css",
   "./app.js",
+  "./supabase-config.js",
   "./manifest.webmanifest",
   "./icons/icon-192.svg",
   "./icons/icon-512.svg"
