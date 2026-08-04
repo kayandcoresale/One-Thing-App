@@ -41,8 +41,26 @@ function offsets(){return goal.reminder_mode==='gentle'?[-60,-10,0,20]:goal.remi
 function schedule(){cancel();if(!goal||!activeToday()||todayEntry()||Notification.permission!=='granted')return;const t=targetDate().getTime(),now=Date.now();offsets().forEach(o=>{const delay=t+o*60000-now;if(delay>0&&delay<86400000)timers.push(setTimeout(()=>notify(o),delay))})}
 function cancel(){timers.forEach(clearTimeout);timers=[]}
 function notify(o){if(!goal||todayEntry()||Notification.permission!=='granted')return;const options={body:notificationMessage(o),icon:'icons/icon-192.svg',tag:`one-${goal.id}-${dateKey()}-${o}`,requireInteraction:o>=0};navigator.serviceWorker.ready.then(r=>r.showNotification(goal.commitment,options))}
-function notificationMessage(o){const name=profile?.preferred_name||profile?.display_name||'You',mins=Math.abs(o),timing=o===0?'It is time.':o<0?`${human(mins)} until it is time.`:`You are ${human(mins)} late.`;const groups={encouraging:[`${name}, you only need to begin.`,`${name}, Future You will be glad you showed up.`],direct:[`${name}, stop negotiating and start.`,`${name}, your commitment is still waiting.`],funny:[`${name}, it has regrettably not completed itself.`,`${name}, this is the notification you asked to annoy you.`],unfiltered:[`${name}, you better fucking ${actionVerb()}.`,`${name}, get up and do the fucking thing.`,`${name}, your goal is not going to handle its own shit.`]};const g=groups[goal.voice]||groups.direct;return`${timing} ${g[Math.floor(Math.random()*g.length)]}`}
-function actionVerb(){const c=goal.commitment.trim();return c.charAt(0).toLowerCase()+c.slice(1)}
+function notificationMessage(o){
+  const context={
+    offset:o,
+    name:profile?.preferred_name||profile?.display_name||'You',
+    goal,
+    entries:entries.filter(x=>x.goal_id===goal?.id),
+    streak:streak(),
+    todayEntry:todayEntry(),
+    dateKey,
+    money,
+    clean,
+    human
+  };
+  return window.ReminderBrain.generate(context);
+}
+
+function actionVerb(){
+  const c=goal.commitment.trim();
+  return c.charAt(0).toLowerCase()+c.slice(1);
+}
 async function enableNotifications(){if(!('Notification'in window))return toast('This browser does not support notifications.');const p=await Notification.requestPermission();if(p==='granted'){schedule();toast('Notifications enabled.')}}
 function updateCountdown(){if(!goal)return;const t=todayEntry(),diff=targetDate()-Date.now();$('countdown').textContent=!activeToday()&&!t?'No commitment scheduled today.':t?.status==='completed'?'Done for today. Notifications silenced.':t?'Today has been recorded.':diff>0?`${human(Math.floor(diff/60000))} until your commitment.`:`${human(Math.floor(Math.abs(diff)/60000))} past your scheduled time. Still available.`}
 function targetDate(){const[h,m]=goal.show_time.slice(0,5).split(':').map(Number),d=new Date();d.setHours(h,m,0,0);return d}
